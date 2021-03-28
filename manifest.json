@@ -1,0 +1,10 @@
+{
+  "name": "Custom new tab page",
+  "description": "Overwrite the default new tab page",
+  "version": "0.1",
+  "incognito": "not_allowed",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "manifest_version": 2
+}
