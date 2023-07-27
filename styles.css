@@ -8,3 +8,13 @@ body {
   height: 100vh;
   object-fit: cover;
 }
+
+.textarea {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgb(0 0 0 / 50%);
+  outline: none;
+  padding: 1rem;
+  backdrop-filter: blur(2rem);
+}
