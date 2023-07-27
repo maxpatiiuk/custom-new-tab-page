@@ -17,3 +17,27 @@ img.addEventListener(
   },
   { abort: controller.signal },
 );
+
+const observer = new MutationObserver((...e)=>{
+    console.log(...e, e.addedNodes?.[0]?.outerHTML);
+    observer.disconnect();
+    controller.abort();
+    document.title = 'Scratch Page';
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="50" fill="#faf"></circle>
+    </svg>`;
+    const blob = new Blob([svg], {type: 'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    const link =document.createElement('link');
+    link.type = 'image/svg+xml';
+    link.rel = 'shortcut icon';
+    link.href = url;
+    document.head.appendChild(link);
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+    attributes: true,
+});
