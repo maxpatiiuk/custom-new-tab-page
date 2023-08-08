@@ -18,8 +18,10 @@ img.addEventListener(
   { abort: controller.signal },
 );
 
-const observer = new MutationObserver((...e) => {
-  console.log(...e, e.addedNodes?.[0]?.outerHTML);
+const observer = new MutationObserver(([mutation]) => {
+  const node = mutation.addedNodes?.[0];
+  if (node?.textContent.trim() === '' && node.outerHTML === undefined) return;
+
   observer.disconnect();
   controller.abort();
   document.title = 'Scratch Page';
