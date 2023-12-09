@@ -1,6 +1,6 @@
 const imgDir = 'imgs/';
-const imgCount = 30;
-const imgExt = '.jpg';
+const imgCount = 12;
+const imgExt = '.png';
 
 const imgIndex = Math.floor(Math.random() * imgCount) + 1;
 const imgSrc = `${imgDir}${imgIndex}${imgExt}`;
