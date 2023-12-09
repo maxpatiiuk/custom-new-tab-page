@@ -30,7 +30,16 @@ img.addEventListener('dblclick', makeEditable, {
 function makeEditable() {
   document.body.innerHTML += `<textarea class="textarea" autofocus></textarea>`;
   textarea = document.querySelector('textarea');
+  Object.defineProperty(textarea, 'json', {
+    get: () => {
+      return JSON.parse(textarea.value);
+    },
+    set: (value) => {
+      textarea.value = JSON.stringify(value, null, 2);
+    },
+  });
   alias(textarea, 'v', 'value');
+  alias(textarea, 'j', 'json');
 
   controller.abort();
   return textarea;
