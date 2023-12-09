@@ -10,13 +10,31 @@ img.setAttribute('src', imgSrc);
 
 const controller = new AbortController();
 
-img.addEventListener(
-  'dblclick',
-  () => {
-    document.body.innerHTML += `<textarea class="textarea" autofocus></textarea>`;
-  },
-  { abort: controller.signal },
-);
+let textarea = undefined;
+Object.defineProperty(window, 'textarea', {
+  get: () => textarea ?? makeEditable(),
+  set: (value) => (textarea = value),
+});
+
+const alias = (object, alias, canonical) =>
+  Object.defineProperty(object, alias, {
+    get: () => object[canonical],
+    set: (value) => (object[canonical] = value),
+  });
+alias(window, 't', 'textarea');
+
+img.addEventListener('dblclick', makeEditable, {
+  abort: controller.signal,
+  once: true,
+});
+function makeEditable() {
+  document.body.innerHTML += `<textarea class="textarea" autofocus></textarea>`;
+  textarea = document.querySelector('textarea');
+  alias(textarea, 'v', 'value');
+
+  controller.abort();
+  return textarea;
+}
 
 const observer = new MutationObserver(([mutation]) => {
   const node = mutation.addedNodes?.[0];
