@@ -1,4 +1,4 @@
-# custom_new_tab_page
+# custom-new-tab-page
 
 Simple Google Chrome extension for replacing New Tab page with a
 gallery
@@ -11,7 +11,7 @@ than 1
 
 After uploading the images, change the value of the `imgCount` constant
 in `script.js`. You can also edit the file to change the image's
-extension or location. 
+extension or location.
 
 ## Installation
  * Open `chrome://extensions` in your Google Chrome.
@@ -23,3 +23,6 @@ extension or location.
 ## Special features
 
 Double click anywhere on the page to bring up a simpler text editor for super quick notes
+
+You can change the value of the editor by typing `t.v = 'some value'` in
+the DevTools' console. Similarly, you can store a JSON value: `t.j = {"a": 1}`.
