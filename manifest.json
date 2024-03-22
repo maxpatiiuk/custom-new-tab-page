@@ -1,7 +1,7 @@
 {
   "name": "Custom new tab page",
   "description": "Overwrite the default new tab page",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
