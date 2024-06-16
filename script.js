@@ -8,49 +8,35 @@ const imgSrc = `${imgDir}${imgIndex}${imgExt}`;
 const img = document.getElementById('img');
 img.setAttribute('src', imgSrc);
 
-const controller = new AbortController();
-
-let textarea = undefined;
-Object.defineProperty(window, 'textarea', {
-  get: () => textarea ?? makeEditable(),
-  set: (value) => (textarea = value),
+Object.defineProperty(window, 'j', {
+  get: () => JSON.parse(getTextarea().value),
+  set: (value) => {
+    getTextarea().value = JSON.stringify(value, null, 2);
+  },
+});
+Object.defineProperty(window, 'v', {
+  get: () => getTextarea().value,
+  set: (value) => {
+    getTextarea().value = value;
+  },
 });
 
-const alias = (object, alias, canonical) =>
-  Object.defineProperty(object, alias, {
-    get: () => object[canonical],
-    set: (value) => (object[canonical] = value),
-  });
-alias(window, 't', 'textarea');
-
-img.addEventListener('dblclick', makeEditable, {
-  abort: controller.signal,
-  once: true,
-});
-function makeEditable() {
+function getTextarea() {
+  if (textarea) return textarea;
   document.body.innerHTML += `<textarea class="textarea" autofocus></textarea>`;
   textarea = document.querySelector('textarea');
-  Object.defineProperty(textarea, 'json', {
-    get: () => {
-      return JSON.parse(textarea.value);
-    },
-    set: (value) => {
-      textarea.value = JSON.stringify(value, null, 2);
-    },
-  });
-  alias(textarea, 'v', 'value');
-  alias(textarea, 'j', 'json');
-
-  controller.abort();
+  img.removeEventListener('dblclick', getTextarea);
   return textarea;
 }
+let textarea = undefined;
+
+img.addEventListener('dblclick', getTextarea);
 
 const observer = new MutationObserver(([mutation]) => {
   const node = mutation.addedNodes?.[0];
   if (node?.textContent.trim() === '' && node.outerHTML === undefined) return;
 
   observer.disconnect();
-  controller.abort();
   document.title = 'Scratch Page';
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

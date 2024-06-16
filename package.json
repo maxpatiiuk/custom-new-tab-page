@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "package": "npm run build && zip -r ../new-tab-page.zip . -x .github/\\* .git/\\* node_modules/\\* .idea/\\* .vscode/\\*",
-    "build": "echo 'Nothing to build'"
+    "package": "zip -r ../new-tab-page.zip . -x .github/\\* .git/\\* node_modules/\\* .idea/\\* .vscode/\\*"
   },
   "dependencies": {
     "prettier": "^3.0.0",
