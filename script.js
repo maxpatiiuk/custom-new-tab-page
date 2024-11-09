@@ -1,12 +1,53 @@
-const imgDir = 'imgs/';
-const imgCount = 12;
-const imgExt = '.png';
+'use strict';
 
-const imgIndex = Math.floor(Math.random() * imgCount) + 1;
-const imgSrc = `${imgDir}${imgIndex}${imgExt}`;
+// Closest January 1st to my birth date to have the timer reset on New Year
+const initialPoint = new Date('2003-01-01');
+const minimumLifetime = 100;
+const fractionDigits = 6;
 
-const img = document.getElementById('img');
-img.setAttribute('src', imgSrc);
+const numberFormatter = new Intl.NumberFormat(undefined, {
+  style: 'percent',
+  minimumFractionDigits: fractionDigits,
+});
+
+let isDoingDomUpdate = false;
+const main = document.querySelector('main');
+const verticalFilled = main.querySelector('.vertical-filled');
+const horizontalFilled = main.querySelector('.horizontal-filled');
+const counter = main.querySelector('h1');
+main.style.setProperty('--minimum-lifetime', String(minimumLifetime));
+
+/*
+ * The progress number will visibly change every
+ * 365*86400/10^fractionDigits seconds (31 seconds in case of 6 fraction
+ * digits). We keep it simple and re-compute every 10 seconds.
+ */
+updateProgress();
+const progressInterval = setInterval(updateProgress, 1000 * 1);
+
+function updateProgress() {
+  const [percentageYearsPassed, percentageYearProgress] = computeProgress();
+  const numericProgress = percentageYearsPassed + percentageYearProgress / 100;
+
+  isDoingDomUpdate = true;
+  verticalFilled.style.height = `${percentageYearsPassed * 100}%`;
+  horizontalFilled.style.width = `${percentageYearProgress * 100}%`;
+  counter.textContent = numberFormatter.format(numericProgress);
+}
+
+function computeProgress() {
+  const now = new Date();
+
+  const thisYearStart = new Date(now.getUTCFullYear(), 0);
+  const yearsPassed = now.getUTCFullYear() - initialPoint.getUTCFullYear();
+  const percentageYearsPassed = yearsPassed / minimumLifetime;
+  const nextYearStart = new Date(now.getUTCFullYear() + 1, 0);
+  const oneYear = nextYearStart.getTime() - thisYearStart.getTime();
+  const fullYear = now.getTime() - thisYearStart.getTime();
+  const percentageYearProgress = fullYear / oneYear;
+
+  return [percentageYearsPassed, percentageYearProgress];
+}
 
 Object.defineProperty(window, 'j', {
   get: () => JSON.parse(getTextarea().value),
@@ -23,20 +64,28 @@ Object.defineProperty(window, 'v', {
 
 function getTextarea() {
   if (textarea) return textarea;
-  document.body.innerHTML += `<textarea class="textarea" autofocus></textarea>`;
+  main.remove();
+  document.body.innerHTML = `<textarea class="default-content" autofocus></textarea>`;
   textarea = document.querySelector('textarea');
-  img.removeEventListener('dblclick', getTextarea);
+  document.body.removeEventListener('dblclick', getTextarea);
+  clearInterval(progressInterval);
   return textarea;
 }
 let textarea = undefined;
 
-img.addEventListener('dblclick', getTextarea);
+document.body.addEventListener('dblclick', getTextarea);
 
 const observer = new MutationObserver(([mutation]) => {
+  // Don't trigger mutation observer for self-initiated changes
+  if (isDoingDomUpdate) {
+    isDoingDomUpdate = false;
+    return;
+  }
   const node = mutation.addedNodes?.[0];
   if (node?.textContent.trim() === '' && node.outerHTML === undefined) return;
 
   observer.disconnect();
+  document.body.classList.remove('default-content');
   document.title = 'Scratch Page';
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

@@ -1,15 +1,10 @@
 # custom-new-tab-page
 
-Simple Google Chrome extension for replacing New Tab page with a gallery
+Simple Google Chrome extension for replacing New Tab page with a functional yet
+minimalistic page:
 
-## Configuration
-
-Put your images into `./imgs/` directory. They must have a `jpg` extension and
-be named like `$.jpg` where `$` is a number larger than 1
-
-After uploading the images, change the value of the `imgCount` constant in
-`script.js`. You can also edit the file to change the image's extension or
-location.
+- Shows time remaining till I am 100 years old
+- On double-click opens text editor for quick notes
 
 ## Installation
 
