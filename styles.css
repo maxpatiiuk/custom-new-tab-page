@@ -11,12 +11,12 @@ body.default-content {
 
   main {
     height: 100vh;
-    background: #400;
+    background: #000;
   }
 
   .vertical-filled,
   .horizontal-filled {
-    --filled-background: #800;
+    --filled-background: #444;
     background: var(--filled-background);
   }
 

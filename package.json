@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "package": "zip -r ../new-tab-page.zip . -x .github/\\* .git/\\* node_modules/\\* .idea/\\* .vscode/\\* imgs/\\*"
+    "package": "zip -FSr ../new-tab-page.zip . -x .github/\\* .git/\\* node_modules/\\* .idea/\\* .vscode/\\* imgs/\\*"
   },
   "dependencies": {
     "prettier": "^3.0.0",
