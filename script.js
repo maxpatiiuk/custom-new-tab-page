@@ -61,6 +61,12 @@ Object.defineProperty(window, 'v', {
     getTextarea().value = value;
   },
 });
+Object.defineProperty(window, 'vl', {
+  get: () => getTextarea().value.split('\n'),
+  set: (value) => {
+    getTextarea().value = value.join('\n');
+  },
+});
 
 function getTextarea() {
   if (textarea) return textarea;
