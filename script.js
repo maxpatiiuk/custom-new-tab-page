@@ -55,6 +55,12 @@ Object.defineProperty(window, 'j', {
     getTextarea().value = JSON.stringify(value, null, 2);
   },
 });
+Object.defineProperty(window, 'jm', {
+  get: () => JSON.parse(getTextarea().value),
+  set: (value) => {
+    getTextarea().value = JSON.stringify(value);
+  },
+});
 Object.defineProperty(window, 'v', {
   get: () => getTextarea().value,
   set: (value) => {
@@ -62,11 +68,42 @@ Object.defineProperty(window, 'v', {
   },
 });
 Object.defineProperty(window, 'vl', {
-  get: () => getTextarea().value.split('\n'),
+  get: getLines,
+  set: setLines,
+});
+Object.defineProperty(window, 'vlu', {
+  get: () => [...new Set(getLines())],
   set: (value) => {
-    getTextarea().value = value.join('\n');
+    setLines(new Set(value));
   },
 });
+Object.defineProperty(window, 'vls', {
+  get: () => getLines().sort(),
+  set: (value) => {
+    setLines(Array.from(value).sort());
+  },
+});
+Object.defineProperty(window, 'vlsu', {
+  get: () => [...new Set(getLines().sort())],
+  set: (value) => {
+    setLines(new Set(Array.from(value).sort()));
+  },
+});
+Object.defineProperty(window, 'vlus', {
+  get: () => [...new Set(getLines())].sort(),
+  set: (value) => {
+    setLines(Array.from(new Set(value)).sort());
+  },
+});
+
+function getLines() {
+  return getTextarea().value.split('\n');
+}
+
+/** @param {Iterable<unknown>} value */
+function setLines(value) {
+  getTextarea().value = Array.from(value).join('\n');
+}
 
 function getTextarea() {
   if (textarea) return textarea;
