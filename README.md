@@ -1,5 +1,12 @@
 # custom-new-tab-page
 
+## 🟥 Moved
+
+This project is now part of
+[Web Commander](https://github.com/maxpatiiuk/code-share/tree/main/javascript/projects/web-commander),
+
+---
+
 Simple Google Chrome extension for replacing New Tab page with a functional yet
 minimalistic page:
 
